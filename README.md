@@ -74,6 +74,7 @@ from the [latest release](https://github.com/open-jarvis/OpenJarvis/releases/lat
 | `code-assistant` | Agent with code execution, file I/O, and shell access |
 | `scheduled-monitor` | Stateful agent on a schedule with memory |
 | `chat-simple` | Lightweight conversation, no tools |
+| `claude-jarvis` | Voice assistant with tools and memory, powered by Claude (needs `ANTHROPIC_API_KEY`) |
 
 Example:
 

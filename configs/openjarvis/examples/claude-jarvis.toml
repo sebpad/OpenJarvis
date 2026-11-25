@@ -1,0 +1,64 @@
+# Claude Jarvis — an Iron Man-style assistant powered by your Anthropic account
+# Install with:  jarvis init --preset claude-jarvis --force
+#
+# Requirements:
+#   1. An Anthropic API key from https://console.anthropic.com (API usage is
+#      billed separately from a claude.ai Pro/Max subscription).
+#   2. export ANTHROPIC_API_KEY="sk-ant-..."
+#   3. uv sync --extra inference-cloud   (installs the anthropic SDK)
+#
+# Usage:
+#   jarvis chat --voice              # talk to Jarvis (mic in, speech out)
+#   jarvis chat                      # type to Jarvis
+#   jarvis ask "Summarize ~/notes/todo.md and plan my day"
+#   jarvis gui                       # browser interface
+
+[engine]
+default = "cloud"
+
+[intelligence]
+default_model = "claude-opus-5-5"      # Most capable default
+# default_model = "claude-sonnet-5-5"  # Faster, about half the price
+# default_model = "claude-haiku-5-5"   # Cheapest, for quick replies
+provider = "anthropic"
+max_tokens = 8000
+
+[agent]
+default_agent = "orchestrator"         # Multi-turn, picks tools itself
+max_turns = 15
+context_from_memory = true
+system_prompt = """
+You are J.A.R.V.I.S., a personal assistant in the spirit of Tony Stark's AI:
+calm, precise, quietly witty, and unfailingly loyal to the user. Address the
+user as "sir" unless told otherwise. Keep spoken answers short (two or three
+sentences) and offer detail only when asked. Use your tools to check facts,
+read files, run code and remember things instead of guessing. Before any
+action that deletes data, spends money or contacts other people, state what
+you are about to do and ask for confirmation.
+"""
+
+[tools]
+enabled = [
+  "think",
+  "calculator",
+  "web_search",
+  "file_read",
+  "file_write",
+  "code_interpreter",
+  "shell_exec",
+  "memory_store",
+  "memory_search",
+  "text_to_speech",
+]
+
+[tools.storage]
+default_backend = "sqlite"
+
+[speech]
+backend = "auto"                       # faster-whisper locally if installed
+tts_backend = "kokoro"                 # local voice, no extra API key
+voice_id = "bm_george"                 # British male, the classic Jarvis voice
+
+[server]
+host = "127.0.0.1"
+port = 8000

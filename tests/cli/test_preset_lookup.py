@@ -126,3 +126,15 @@ def test_wheel_bundles_presets_inside_the_package() -> None:
     force_include = data["tool"]["hatch"]["build"]["targets"]["wheel"]["force-include"]
 
     assert force_include.get("configs/openjarvis/examples") == "openjarvis/presets"
+
+
+def test_claude_jarvis_preset_loads():
+    from openjarvis.cli._presets import resolve_preset
+    from openjarvis.core.config import load_config
+
+    path = resolve_preset("claude-jarvis")
+    assert path is not None
+    cfg = load_config(path)
+    assert cfg.engine.default == "cloud"
+    assert cfg.intelligence.default_model.startswith("claude-")
+    assert "J.A.R.V.I.S." in cfg.agent.system_prompt
